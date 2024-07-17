@@ -1,6 +1,7 @@
 package automation.test.project;
 
 //import org.junit.*;
+import automation.test.project.pageObject.GooglePage;
 import org.junit.jupiter.api.*;
 //import org.junit.jupiter.api.Test; ez nem kell, mert az előző sorban a * az összes verzióját hozzáadja
 import org.openqa.selenium.By;
@@ -24,8 +25,7 @@ public class TestAutomationSameSessionExecution {
         System.setProperty("webDriver.chrome.driver", System.getProperty("user.dir") + "/src/main/resources/chromeDriver/chromedriver.exe");
     }*/
 
-
-
+    GooglePage googlePage = new GooglePage(driver);
 
     @BeforeAll
     public static void setup() {
@@ -45,13 +45,10 @@ public class TestAutomationSameSessionExecution {
     public void verifyGoogleTitle() {
         driver.get("https://www.google.com");
         assertTrue(driver.getTitle().contains("Google"));
-        WebElement googleTextBox = driver.findElement(By.xpath("//textarea[@id='APjFqb']"));
-        WebElement googleCookieAccept = driver.findElement(By.xpath("//div[@class='QS5gu sy4vM' and contains (text(),'elfogad')]"));
-        googleCookieAccept.click();
-        googleTextBox.click();
-        googleTextBox.sendKeys("Selenium");
-        WebElement googleSearchButton = driver.findElement(By.xpath("//div[@class='aajZCb']//input[@class='gNO89b']"));
-        googleSearchButton.click();
+        googlePage.clickGoogleCookieAccept();
+        googlePage.clickGoogleTextBox();
+        googlePage.fillGoogleTextBox("Selenium");
+        googlePage.clickGoogleSearchButton();
         WebElement seleniumClick = driver.findElement(By.xpath("//a[@href='https://www.selenium.dev/']/h3"));
         seleniumClick.click();
         WebElement seleniumIde = driver.findElement(By.xpath("//a[contains(@class,'selenium-ide')]"));
